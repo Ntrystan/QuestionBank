@@ -3,10 +3,10 @@ import re
 
 def compute_indent(ql: list) -> int:
     if g := re.match(r"^(\s+):", ql[1]):
-        return len(g.group(1))
+        return len(g[1])
     for i in range(2, 10):
         if g := re.match(r"^(\s+)\S", ql[i]):
-            return len(g.group(1))
+            return len(g[1])
 
 
 def find_end_of_options(ql: list) -> int:
@@ -91,12 +91,9 @@ class Directive:
         for opt in options:
             opt_parts = opt.strip().split(maxsplit=1)
             key = opt_parts[0].strip(":")
-            if len(opt_parts) > 1:
-                value = opt_parts[1]
-            else:
-                value = ""
+            value = opt_parts[1] if len(opt_parts) > 1 else ""
             self.options[key] = value
-        if self.kind == "activecode" or self.kind == "actex":
+        if self.kind in ["activecode", "actex"]:
             if "~~~~" in self.content:
                 end_instructions = self.content.index("~~~~")
                 self.instructions = self.content[:end_instructions]
@@ -132,7 +129,7 @@ class Directive:
             key = f":{key}:"
             rlist.append(f"{ind}{key} {val}")
         rlist.append("")
-        rlist = rlist + [ind + x for x in self.content]
+        rlist += [ind + x for x in self.content]
         return "\n".join(rlist)
 
 
