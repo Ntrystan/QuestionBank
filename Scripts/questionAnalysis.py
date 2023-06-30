@@ -162,10 +162,7 @@ def get_combined_qtypes(basecourse):
             flist.append(res)
         except Exception:
             print(f"No stats for {qtype}")
-    if len(flist) > 0:
-        return pd.concat(flist)
-    else:
-        return pd.DataFrame()
+    return pd.concat(flist) if flist else pd.DataFrame()
 
 
 # %%
@@ -190,10 +187,7 @@ def save_results_to_redis(basecourse, rframe, rconn):
 
 # %%
 def get_difficulty(row):
-    if row.question_type == "unittest":
-        return row.rescale_mcc
-    else:
-        return row.rescale_pct
+    return row.rescale_mcc if row.question_type == "unittest" else row.rescale_pct
 
 # %%
 def analyze_one_course(c, r):

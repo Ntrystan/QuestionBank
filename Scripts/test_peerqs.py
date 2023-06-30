@@ -15,7 +15,7 @@ def test_one():
 
     print(m.question)
     print(m)
-    assert str(m)[:12] == ".. mchoice::"
+    assert str(m).startswith(".. mchoice::")
     assert str(m) == correct.format(m.id)
 
 

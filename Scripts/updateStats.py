@@ -20,8 +20,7 @@ def update_one_course(basecourse, r):
             print(q)
             d = directive.Directive(qf.read())
             key = f"{basecourse}/{d.options['topics']}/{d.identifier}"
-            stats = r.get(key)
-            if stats:
+            if stats := r.get(key):
                 stats = json.loads(json.loads(stats))
                 print(stats)
                 for s in [
@@ -39,7 +38,7 @@ def update_one_course(basecourse, r):
 
 
 # %%
-for basecourse in [
+for _ in [
     "pythonds",
     "fopp",
     "thinkcspy",
@@ -56,7 +55,6 @@ for basecourse in [
     "webfundamentals",
     "MasteringDatabases",
 ]:
-
     update_one_course("fopp", r)
 
 # %%

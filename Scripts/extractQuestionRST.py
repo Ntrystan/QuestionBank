@@ -37,20 +37,18 @@ df = pd.read_sql_query(
 # %%
 def compute_indent(q):
     ql = q.split("\n")
-    g = re.match(r"^(\s+):", ql[1])
-    if g:
-        return len(g.group(1))
+    if g := re.match(r"^(\s+):", ql[1]):
+        return len(g[1])
     for i in range(2, 10):
-        g = re.match(r"^(\s+)\S", ql[i])
-        if g:
-            return len(g.group(1))
+        if g := re.match(r"^(\s+)\S", ql[i]):
+            return len(g[1])
 
 
 # %%
 def update_question(
     q, author, difficulty, from_source, topic, basecourse, chapter, subchapter
 ):
-    if q[0:2] == "\\x":
+    if q[:2] == "\\x":
         return
     q = q.strip()
     try:
@@ -107,8 +105,6 @@ q = """
 for ix, row in df.iterrows():
     try:
         topic = row["chapter"] + "/" + row["subchapter"]
-    except KeyError:
-        topic = "not set"
     except Exception:
         topic = "not set"
     p = Path(topic)
